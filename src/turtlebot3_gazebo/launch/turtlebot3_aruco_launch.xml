@@ -1,0 +1,16 @@
+<launch>
+    <!-- Launch the TurtleBot3 Gazebo simulation -->
+    <node pkg="gazebo_ros" exec="spawn_entity.py" output="screen">
+        <param name="world" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world" />
+    </node>
+    
+    <!-- Run the aruco_pose2.py script -->
+    <node pkg="ros2_pkg" exec="/bin/python3" args="/home/dilpreet/ros2_ws/src/aruco_package1/aruco_detect_gazebo/aruco_pose2.py" output="screen">
+        <param name="use_sim_time" value="true" />
+    </node>
+    
+    <!-- Run the move_mobile_robot_xz.py script -->
+    <node pkg="ros2_pkg" exec="/bin/python3" args="/home/dilpreet/turtlebot3_ws/src/turtlebot3_gazebo/src/move_mobile_robot_xz.py" output="screen">
+        <param name="use_sim_time" value="true" />
+    </node>
+</launch>

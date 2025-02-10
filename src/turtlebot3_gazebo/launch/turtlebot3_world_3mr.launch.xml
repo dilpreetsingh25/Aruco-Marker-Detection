@@ -1,0 +1,76 @@
+<launch>
+  <!-- Define paths and configurations -->
+  <let name="world_path"
+       value="$(find-pkg-share turtlebot3_gazebo)/worlds/turtlebot3_world.world" />
+  <let name="use_sim_time" value="true" />
+
+  <!-- Define position variables for TurtleBot3 #1 -->
+  <let name="x_pose_tb3_1" value="-1.0" />
+  <let name="y_pose_tb3_1" value="-0.5" />
+  <let name="z_pose_tb3_1" value="0.0" />
+
+  <!-- Define position variables for TurtleBot3 #2 -->
+  <let name="x_pose_tb3_2" value="1.0" />
+  <let name="y_pose_tb3_2" value="0.7" />
+  <let name="z_pose_tb3_2" value="0.0" />
+
+  <!-- Define position variables for the mobile robot -->
+  <let name="x_pose_mobile" value="2.5" />
+  <let name="y_pose_mobile" value="1.5" />
+  <let name="z_pose_mobile" value="0.0" />
+
+  <!-- Start Gazebo server -->
+  <include file="$(find-pkg-share gazebo_ros)/launch/gzserver.launch.py">
+    <arg name="world" value="$(var world_path)" />
+  </include>
+
+  <!-- Start Gazebo client -->
+  <include file="$(find-pkg-share gazebo_ros)/launch/gzclient.launch.py" />
+
+  <!-- Start the robot_state_publisher for TurtleBot3 -->
+  <include file="$(find-pkg-share turtlebot3_gazebo)/launch/robot_state_publisher.launch.py">
+    <arg name="use_sim_time" value="$(var use_sim_time)" />
+  </include>
+
+  <!-- Spawn TurtleBot3 #1 -->
+  <include file="$(find-pkg-share turtlebot3_gazebo)/launch/spawn_turtlebot3.launch.py">
+    <arg name="x_pose" value="$(var x_pose_tb3_1)" />
+    <arg name="y_pose" value="$(var y_pose_tb3_1)" />
+    <arg name="z_pose" value="$(var z_pose_tb3_1)" />
+  </include>
+
+  <!-- Spawn TurtleBot3 #2 -->
+  <include file="$(find-pkg-share turtlebot3_gazebo)/launch/spawn_turtlebot3.launch.py">
+    <arg name="x_pose" value="$(var x_pose_tb3_2)" />
+    <arg name="y_pose" value="$(var y_pose_tb3_2)" />
+    <arg name="z_pose" value="$(var z_pose_tb3_2)" />
+  </include>
+
+  <!-- Define URDF path for the mobile robot -->
+  <let name="urdf_path"
+       value="$(find-pkg-share my_robot_description)/urdf/my_robot.urdf.xacro" />
+
+  <!-- Start robot_state_publisher for the mobile robot -->
+  <node pkg="robot_state_publisher" exec="robot_state_publisher">
+    <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+  </node>
+
+    <group namespace="robot1">
+        <include file="$(find-pkg-share turtlebot3_gazebo)/launch/spawn_turtlebot3.launch.py">
+            <arg name="x_pose" value="0.0" />
+            <arg name="y_pose" value="0.0" />
+        </include>
+    </group>
+
+    <group namespace="robot2">
+        <include file="$(find-pkg-share turtlebot3_gazebo)/launch/spawn_turtlebot3.launch.py">
+            <arg name="x_pose" value="1.0" />
+            <arg name="y_pose" value="0.7" />
+        </include>
+    </group>
+
+  <!-- Spawn the mobile robot -->
+  <node pkg="gazebo_ros" exec="spawn_entity.py"
+        args="-topic robot_description -entity mobile_robot -x $(var x_pose_mobile) -y $(var y_pose_mobile) -z $(var z_pose_mobile)">
+  </node>
+</launch>

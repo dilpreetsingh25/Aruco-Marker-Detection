@@ -1,0 +1,33 @@
+<launch>
+  <!-- Define paths and configurations -->
+  <let name="world_path"
+       value="$(find-pkg-share turtlebot3_gazebo)/worlds/turtlebot3_world.world" />
+  <let name="use_sim_time" value="true" />
+  <let name="x_pose" value="-2.0" />
+  <let name="y_pose" value="-0.5" />
+
+  <!-- Start Gazebo server -->
+  <include file="$(find-pkg-share gazebo_ros)/launch/gzserver.launch.py">
+    <arg name="world" value="$(var world_path)" />
+  </include>
+
+  <!-- <include file="ros2_ws/src/aruco_package1/aruco_detect_gazebo/aruco_z_dist.py">
+  </include> -->
+
+  <!-- <include file="$(find-pkg-share turtlebot3_gazebo)/src/move_turtlebot1.py">
+  </include> -->
+
+  <!-- Start Gazebo client -->
+  <include file="$(find-pkg-share gazebo_ros)/launch/gzclient.launch.py" />
+
+  <!-- Start the robot_state_publisher -->
+  <include file="$(find-pkg-share turtlebot3_gazebo)/launch/robot_state_publisher.launch.py">
+    <arg name="use_sim_time" value="$(var use_sim_time)" />
+  </include>
+
+  <!-- Spawn TurtleBot3 -->
+  <include file="$(find-pkg-share turtlebot3_gazebo)/launch/spawn_turtlebot3.launch.py">
+    <arg name="x_pose" value="$(var x_pose)" />
+    <arg name="y_pose" value="$(var y_pose)" />
+  </include>
+</launch>
