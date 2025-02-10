@@ -17,7 +17,7 @@ sudo apt update && sudo apt install -y \
 ```bash
 mkdir -p ~/object_tracking_ws/src
 cd ~/object_tracking_ws/src
-git clone (https://github.com/dilpreetsingh25/Aruco-Marker-Detection.git)
+git clone https://github.com/dilpreetsingh25/Aruco-Marker-Detection.git
 cd ~/object_tracking_ws
 colcon build --symlink-install
 source install/setup.bash
