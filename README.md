@@ -1,9 +1,6 @@
-# ARUCO TRACKING
+# ARUCO Detection & Tracking in ROS 2
 
-
-# Object Detection & Tracking in ROS 2
-
-This repository contains a ROS 2 workspace for real-time object detection and tracking using OpenCV and deep learning models.
+This repository contains a ROS 2 workspace for real-time aruco detection and tracking using OpenCV and deep learning models.
 
 ## **1. Installation & Setup**
 ### **Prerequisites**
@@ -13,29 +10,29 @@ sudo apt update && sudo apt install -y \
     ros-humble-vision-opencv \
     ros-humble-image-transport \
     python3-opencv \
-    python3-numpy
+    python3-opencv-contrib-python
 ```
 
 ### **Clone and Build**
 ```bash
 mkdir -p ~/object_tracking_ws/src
 cd ~/object_tracking_ws/src
-git clone <repository_link>
+git clone (https://github.com/dilpreetsingh25/Aruco-Marker-Detection.git)
 cd ~/object_tracking_ws
 colcon build --symlink-install
 source install/setup.bash
 ```
 
-## **2. Running the Object Detection & Tracking System**
+## **2. Running the Aruco Detection & Tracking System**
 
 ### **Launch the Detection Pipeline**
 ```bash
-ros2 launch object_detection detect.launch.py
+ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
 ```
 
 ### **Launch the Tracking Node**
 ```bash
-ros2 launch object_tracking track.launch.py
+python3 src/aruco_detect_gazebo/aruco_detector.py
 ```
 
 ## **3. Repository Structure**
@@ -65,7 +62,7 @@ object_tracking_ws/
 3. **ROS 2 Topics**:
    - `/camera/image_raw` → Input image stream
    - `/detections` → Detected objects (bounding boxes)
-   - `/tracked_objects` → Tracked object positions
+   
 
 ## **5. Dependencies**
 - ROS 2 Humble
