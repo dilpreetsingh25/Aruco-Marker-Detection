@@ -76,6 +76,3 @@ Feel free to open issues or submit pull requests to improve this project!
 ## **7. License**
 This project is licensed under the MIT License. See `LICENSE` for details.
 
----
-🚀 Happy Coding!
-
